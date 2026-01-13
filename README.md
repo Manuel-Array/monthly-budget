@@ -11,8 +11,9 @@ A simple personal finance app built with **Flutter** to keep track of fixed mont
 * Automatic calculation of:
   * total fixed expenses
   * total fixed incomes
-  * free money (incomes - expenses)
+  * money left (incomes - expenses)
 * Swipe to delete items
+* Edit existing items
 
 Note: Demo data is temporarily seeded at startup to make development and UI testing easier.
 
@@ -83,5 +84,4 @@ context.read<AppState>().addFixedExpense(item);
 * Persistent storage (SharedPreferences or local DB)
 * Monthly reset logic
 * Variable (non-recurring) expenses
-* Editing existing items
 * Categories & statistics
