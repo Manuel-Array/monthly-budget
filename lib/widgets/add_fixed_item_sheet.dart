@@ -7,10 +7,12 @@ import 'package:monthly_budget/models/fixed_item.dart';
 /// Bottom sheet used to add a new fixed expense or income.
 class AddFixedItemSheet extends StatefulWidget {
   final bool isIncome;
+  final FixedItem? existingItem;
 
   const AddFixedItemSheet({
     super.key,
     required this.isIncome,
+    this.existingItem,
   });
 
   @override
@@ -23,6 +25,17 @@ class _AddFixedItemSheetState
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final item = widget.existingItem;
+    if (item != null) {
+      _titleController.text = item.title;
+      _amountController.text = item.amount.toStringAsFixed(2);
+    }
+  }
 
   @override
   void dispose() {
@@ -58,9 +71,24 @@ class _AddFixedItemSheetState
     );
 
     final appState = context.read<AppState>();
-    widget.isIncome
-        ? appState.addFixedIncome(item)
-        : appState.addFixedExpense(item);
+
+    if (widget.existingItem == null) {
+      // Add
+      widget.isIncome
+          ? appState.addFixedIncome(item)
+          : appState.addFixedExpense(item);
+    } else {
+      // Update: keep the same id
+      final updated = FixedItem(
+        id: widget.existingItem!.id,
+        title: title,
+        amount: amount,
+      );
+
+      widget.isIncome
+          ? appState.updateFixedIncome(updated)
+          : appState.updateFixedExpense(updated);
+    }
 
     Navigator.of(context).pop();
   }
@@ -81,9 +109,13 @@ class _AddFixedItemSheetState
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            widget.isIncome
-                ? 'Add Fixed Income'
-                : 'Add Fixed Expense',
+            widget.existingItem == null
+                ? (widget.isIncome
+                    ? 'Add Fixed Income'
+                    : 'Add Fixed Expense')
+                : (widget.isIncome
+                    ? 'Edit Fixed Income'
+                    : 'Edit Fixed Expense'),
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -124,7 +156,11 @@ class _AddFixedItemSheetState
             width: double.infinity,
             child: FilledButton(
               onPressed: _save,
-              child: const Text('Save'),
+              child: Text(
+                widget.existingItem == null
+                    ? 'Save'
+                    : 'Save changes',
+              ),
             ),
           ),
         ],
