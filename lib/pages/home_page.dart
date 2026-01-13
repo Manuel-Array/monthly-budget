@@ -38,6 +38,9 @@ class _HomePageState extends State<HomePage>
   void _openAddSheet({required bool isIncome}) {
     showModalBottomSheet(
       context: context,
+      useSafeArea: true,
+      enableDrag: true,
+      showDragHandle: true,
       isScrollControlled: true,
       builder: (_) => AddFixedItemSheet(isIncome: isIncome),
     );
