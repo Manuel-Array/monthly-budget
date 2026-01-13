@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:monthly_budget/app_state.dart';
 import 'package:monthly_budget/models/fixed_item.dart';
+import 'package:monthly_budget/widgets/add_fixed_item_sheet.dart';
 
 /// Displays either fixed expenses or fixed incomes
 /// depending on [isIncome].
@@ -58,6 +59,16 @@ class FixedList extends StatelessWidget {
           },
           child: Card(
             child: ListTile(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => AddFixedItemSheet(
+                    isIncome: isIncome,
+                    existingItem: item,
+                  ),
+                );
+              },
               title: Text(item.title),
               trailing:
                   Text('€ ${_formatMoney(item.amount)}'),
