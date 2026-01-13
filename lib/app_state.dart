@@ -37,6 +37,22 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateFixedExpense(FixedItem updated) {
+    final index = _fixedExpenses.indexWhere((e) => e.id == updated.id);
+    if (index == -1) return;
+
+    _fixedExpenses[index] = updated;
+    notifyListeners();
+  }
+
+  void updateFixedIncome(FixedItem updated) {
+    final index = _fixedIncomes.indexWhere((e) => e.id == updated.id);
+    if (index == -1) return;
+
+    _fixedIncomes[index] = updated;
+    notifyListeners();
+  }
+
   void removeFixedExpense(String id) {
     _fixedExpenses.removeWhere((e) => e.id == id);
     notifyListeners();
