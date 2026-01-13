@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 /// Displays the main financial summary:
-/// fixed expenses, fixed incomes and free money.
+/// fixed expenses, fixed incomes and money left.
 class SummaryCards extends StatelessWidget {
   final double fixedExpensesTotal;
   final double fixedIncomesTotal;
-  final double freeMoney;
+  final double moneyLeft;
 
   const SummaryCards({
     super.key,
     required this.fixedExpensesTotal,
     required this.fixedIncomesTotal,
-    required this.freeMoney,
+    required this.moneyLeft,
   });
 
   String _formatMoney(double value) =>
@@ -44,8 +44,8 @@ class SummaryCards extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _SummaryCard(
-            title: 'Free Money',
-            value: '€ ${_formatMoney(freeMoney)}',
+            title: 'Money Left',
+            value: '€ ${_formatMoney(moneyLeft)}',
             icon: Icons.account_balance_wallet,
           ),
         ],

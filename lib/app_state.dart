@@ -23,7 +23,7 @@ class AppState extends ChangeNotifier {
   double get totalFixedIncomes =>
       _fixedIncomes.fold(0.0, (sum, item) => sum + item.amount);
 
-  double get freeMoney =>
+  double get moneyLeft =>
       totalFixedIncomes - totalFixedExpenses;
 
   // Mutations

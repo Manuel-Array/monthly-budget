@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage>
           SummaryCards(
             fixedExpensesTotal: appState.totalFixedExpenses,
             fixedIncomesTotal: appState.totalFixedIncomes,
-            freeMoney: appState.freeMoney,
+            moneyLeft: appState.moneyLeft,
           ),
           const SizedBox(height: 8),
           Expanded(
