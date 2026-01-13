@@ -62,6 +62,9 @@ class FixedList extends StatelessWidget {
               onTap: () {
                 showModalBottomSheet(
                   context: context,
+                  useSafeArea: true,
+                  enableDrag: true,
+                  showDragHandle: true,
                   isScrollControlled: true,
                   builder: (_) => AddFixedItemSheet(
                     isIncome: isIncome,
