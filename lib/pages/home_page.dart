@@ -53,20 +53,22 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Monthly Budget'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Fixed Expenses'),
-            Tab(text: 'Fixed Incomes'),
-          ],
-        ),
       ),
       body: Column(
         children: [
-          SummaryCards(
+          MoneyLeftCard(
+            moneyLeft: appState.moneyLeft,
+          ),
+          TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(text: 'Fixed Expenses'),
+              Tab(text: 'Fixed Incomes'),
+            ],
+          ),
+          FixedTotalsCards(
             fixedExpensesTotal: appState.totalFixedExpenses,
             fixedIncomesTotal: appState.totalFixedIncomes,
-            moneyLeft: appState.moneyLeft,
           ),
           const SizedBox(height: 8),
           Expanded(

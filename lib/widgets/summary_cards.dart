@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// Displays the main financial summary:
-/// fixed expenses, fixed incomes and money left.
-class SummaryCards extends StatelessWidget {
-  final double fixedExpensesTotal;
-  final double fixedIncomesTotal;
+/// Displays the money left card prominently.
+class MoneyLeftCard extends StatelessWidget {
   final double moneyLeft;
 
-  const SummaryCards({
+  const MoneyLeftCard({
     super.key,
-    required this.fixedExpensesTotal,
-    required this.fixedIncomesTotal,
     required this.moneyLeft,
   });
 
@@ -20,33 +15,67 @@ class SummaryCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-      child: Column(
-        children: [
-          Row(
+      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+      child: Card(
+        elevation: 1,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: _SummaryCard(
-                  title: 'Fixed Expenses',
-                  value: '€ ${_formatMoney(fixedExpensesTotal)}',
-                  icon: Icons.trending_down,
-                ),
+              Icon(Icons.account_balance_wallet, size: 32),
+              const SizedBox(height: 8),
+              Text(
+                'Money Left',
+                style: Theme.of(context).textTheme.labelMedium,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _SummaryCard(
-                  title: 'Fixed Incomes',
-                  value: '€ ${_formatMoney(fixedIncomesTotal)}',
-                  icon: Icons.trending_up,
-                ),
+              const SizedBox(height: 4),
+              Text(
+                '€ ${_formatMoney(moneyLeft)}',
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          _SummaryCard(
-            title: 'Money Left',
-            value: '€ ${_formatMoney(moneyLeft)}',
-            icon: Icons.account_balance_wallet,
+        ),
+      ),
+    );
+  }
+}
+
+/// Displays fixed expenses and incomes side by side.
+class FixedTotalsCards extends StatelessWidget {
+  final double fixedExpensesTotal;
+  final double fixedIncomesTotal;
+
+  const FixedTotalsCards({
+    super.key,
+    required this.fixedExpensesTotal,
+    required this.fixedIncomesTotal,
+  });
+
+  String _formatMoney(double value) =>
+      value.toStringAsFixed(2);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      child: Row(
+        children: [
+          Expanded(
+            child: _SummaryCard(
+              title: 'Fixed Expenses',
+              value: '€ ${_formatMoney(fixedExpensesTotal)}',
+              icon: Icons.trending_down,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: _SummaryCard(
+              title: 'Fixed Incomes',
+              value: '€ ${_formatMoney(fixedIncomesTotal)}',
+              icon: Icons.trending_up,
+            ),
           ),
         ],
       ),
