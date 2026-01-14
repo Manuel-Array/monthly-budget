@@ -45,7 +45,7 @@ class FixedList extends StatelessWidget {
           background: Container(
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.only(right: 16),
-            color: Colors.red.withOpacity(0.2),
+            color: Colors.red.withValues(alpha: 0.2),
             child: const Icon(Icons.delete),
           ),
           onDismissed: (_) {
