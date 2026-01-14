@@ -68,12 +68,12 @@ class AppState extends ChangeNotifier {
     if (_fixedExpenses.isNotEmpty || _fixedIncomes.isNotEmpty) return;
 
     _fixedIncomes.add(
-      FixedItem(id: 'inc1', title: 'Salary', amount: 1800),
+      FixedItem(id: 'inc1', title: 'Salary', amount: 1800, isRecurring: true),
     );
 
     _fixedExpenses.addAll([
-      FixedItem(id: 'exp1', title: 'Rent', amount: 650),
-      FixedItem(id: 'exp2', title: 'Internet', amount: 29.99),
+      FixedItem(id: 'exp1', title: 'Rent', amount: 650, isRecurring: true),
+      FixedItem(id: 'exp2', title: 'Internet', amount: 29.99, isRecurring: true),
     ]);
 
     notifyListeners();

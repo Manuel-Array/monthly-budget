@@ -62,8 +62,8 @@ class _HomePageState extends State<HomePage>
           TabBar(
             controller: _tabController,
             tabs: const [
-              Tab(text: 'Fixed Expenses'),
-              Tab(text: 'Fixed Incomes'),
+              Tab(text: 'Expenses'),
+              Tab(text: 'Incomes'),
             ],
           ),
           FixedTotalsCards(

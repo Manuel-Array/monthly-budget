@@ -25,6 +25,7 @@ class _AddFixedItemSheetState
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   String? _errorMessage;
+  bool _isRecurring = false;
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _AddFixedItemSheetState
     if (item != null) {
       _titleController.text = item.title;
       _amountController.text = item.amount.toStringAsFixed(2);
+      _isRecurring = item.isRecurring;
     }
   }
 
@@ -68,6 +70,7 @@ class _AddFixedItemSheetState
           .toString(),
       title: title,
       amount: amount,
+      isRecurring: _isRecurring,
     );
 
     final appState = context.read<AppState>();
@@ -83,6 +86,7 @@ class _AddFixedItemSheetState
         id: widget.existingItem!.id,
         title: title,
         amount: amount,
+        isRecurring: _isRecurring,
       );
 
       widget.isIncome
@@ -136,6 +140,15 @@ class _AddFixedItemSheetState
             keyboardType:
                 const TextInputType.numberWithOptions(
                     decimal: true),
+          ),
+          const SizedBox(height: 12),
+          CheckboxListTile(
+            value: _isRecurring,
+            onChanged: (value) =>
+                setState(() => _isRecurring = value ?? false),
+            title: const Text('Recurring monthly'),
+            controlAffinity: ListTileControlAffinity.leading,
+            contentPadding: EdgeInsets.zero,
           ),
           if (_errorMessage != null) ...[
             const SizedBox(height: 10),
