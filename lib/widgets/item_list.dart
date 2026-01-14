@@ -18,8 +18,9 @@ class ItemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
-    final List<Item> items =
-        isIncome ? appState.incomes : appState.expenses;
+    final items = (isIncome ? appState.incomes : appState.expenses)
+        .toList()
+      ..sort((a, b) => (b.isRecurring ? 1 : 0) - (a.isRecurring ? 1 : 0));
 
     if (items.isEmpty) {
       return Center(
