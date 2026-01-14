@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'package:monthly_budget/app_state.dart';
 import 'package:monthly_budget/widgets/summary_cards.dart';
-import 'package:monthly_budget/widgets/fixed_list.dart';
-import 'package:monthly_budget/widgets/add_fixed_item_sheet.dart';
+import 'package:monthly_budget/widgets/item_list.dart';
+import 'package:monthly_budget/widgets/add_item_sheet.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage>
       enableDrag: true,
       showDragHandle: true,
       isScrollControlled: true,
-      builder: (_) => AddFixedItemSheet(isIncome: isIncome),
+      builder: (_) => AddItemSheet(isIncome: isIncome),
     );
   }
 
@@ -66,17 +66,17 @@ class _HomePageState extends State<HomePage>
               Tab(text: 'Incomes'),
             ],
           ),
-          FixedTotalsCards(
-            fixedExpensesTotal: appState.totalFixedExpenses,
-            fixedIncomesTotal: appState.totalFixedIncomes,
+          TotalsCards(
+            expensesTotal: appState.totalExpenses,
+            incomesTotal: appState.totalIncomes,
           ),
           const SizedBox(height: 8),
           Expanded(
             child: TabBarView(
               controller: _tabController,
               children: const [
-                FixedList(isIncome: false),
-                FixedList(isIncome: true),
+                ItemList(isIncome: false),
+                ItemList(isIncome: true),
               ],
             ),
           ),

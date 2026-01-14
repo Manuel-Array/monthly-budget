@@ -1,79 +1,79 @@
 import 'package:flutter/foundation.dart';
-import 'models/fixed_item.dart';
+import 'models/item.dart';
 
 class AppState extends ChangeNotifier {
   AppState._internal();
   static final AppState _instance = AppState._internal();
   static AppState get instance => _instance;
 
-  // Fixed monthly data
-  final List<FixedItem> _fixedExpenses = [];
-  final List<FixedItem> _fixedIncomes = [];
+  // Monthly data
+  final List<Item> _expenses = [];
+  final List<Item> _incomes = [];
 
-  List<FixedItem> get fixedExpenses =>
-      List.unmodifiable(_fixedExpenses);
+  List<Item> get expenses =>
+      List.unmodifiable(_expenses);
 
-  List<FixedItem> get fixedIncomes =>
-      List.unmodifiable(_fixedIncomes);
+  List<Item> get incomes =>
+      List.unmodifiable(_incomes);
 
   // Derived values
-  double get totalFixedExpenses =>
-      _fixedExpenses.fold(0.0, (sum, item) => sum + item.amount);
+  double get totalExpenses =>
+      _expenses.fold(0.0, (sum, item) => sum + item.amount);
 
-  double get totalFixedIncomes =>
-      _fixedIncomes.fold(0.0, (sum, item) => sum + item.amount);
+  double get totalIncomes =>
+      _incomes.fold(0.0, (sum, item) => sum + item.amount);
 
   double get moneyLeft =>
-      totalFixedIncomes - totalFixedExpenses;
+      totalIncomes - totalExpenses;
 
   // Mutations
-  void addFixedExpense(FixedItem item) {
-    _fixedExpenses.add(item);
+  void addExpense(Item item) {
+    _expenses.add(item);
     notifyListeners();
   }
 
-  void addFixedIncome(FixedItem item) {
-    _fixedIncomes.add(item);
+  void addIncome(Item item) {
+    _incomes.add(item);
     notifyListeners();
   }
 
-  void updateFixedExpense(FixedItem updated) {
-    final index = _fixedExpenses.indexWhere((e) => e.id == updated.id);
+  void updateExpense(Item updated) {
+    final index = _expenses.indexWhere((e) => e.id == updated.id);
     if (index == -1) return;
 
-    _fixedExpenses[index] = updated;
+    _expenses[index] = updated;
     notifyListeners();
   }
 
-  void updateFixedIncome(FixedItem updated) {
-    final index = _fixedIncomes.indexWhere((e) => e.id == updated.id);
+  void updateIncome(Item updated) {
+    final index = _incomes.indexWhere((e) => e.id == updated.id);
     if (index == -1) return;
 
-    _fixedIncomes[index] = updated;
+    _incomes[index] = updated;
     notifyListeners();
   }
 
-  void removeFixedExpense(String id) {
-    _fixedExpenses.removeWhere((e) => e.id == id);
+  void removeExpense(String id) {
+    _expenses.removeWhere((e) => e.id == id);
     notifyListeners();
   }
 
-  void removeFixedIncome(String id) {
-    _fixedIncomes.removeWhere((e) => e.id == id);
+  void removeIncome(String id) {
+    _incomes.removeWhere((e) => e.id == id);
     notifyListeners();
   }
 
   // Dev-only helper to avoid empty UI at startup
   void seedDemoDataIfEmpty() {
-    if (_fixedExpenses.isNotEmpty || _fixedIncomes.isNotEmpty) return;
+    if (_expenses.isNotEmpty || _incomes.isNotEmpty) return;
 
-    _fixedIncomes.add(
-      FixedItem(id: 'inc1', title: 'Salary', amount: 1800, isRecurring: true),
+    _incomes.add(
+      Item(id: 'inc1', title: 'Salary', amount: 1800, isRecurring: true),
     );
 
-    _fixedExpenses.addAll([
-      FixedItem(id: 'exp1', title: 'Rent', amount: 650, isRecurring: true),
-      FixedItem(id: 'exp2', title: 'Internet', amount: 29.99, isRecurring: true),
+    _expenses.addAll([
+      Item(id: 'exp1', title: 'Rent', amount: 650, isRecurring: true),
+      Item(id: 'exp2', title: 'Internet', amount: 29.99, isRecurring: true),
     ]);
 
     notifyListeners();

@@ -42,15 +42,15 @@ class MoneyLeftCard extends StatelessWidget {
   }
 }
 
-/// Displays fixed expenses and incomes side by side.
-class FixedTotalsCards extends StatelessWidget {
-  final double fixedExpensesTotal;
-  final double fixedIncomesTotal;
+/// Displays expenses and incomes totals side by side.
+class TotalsCards extends StatelessWidget {
+  final double expensesTotal;
+  final double incomesTotal;
 
-  const FixedTotalsCards({
+  const TotalsCards({
     super.key,
-    required this.fixedExpensesTotal,
-    required this.fixedIncomesTotal,
+    required this.expensesTotal,
+    required this.incomesTotal,
   });
 
   String _formatMoney(double value) =>
@@ -64,16 +64,16 @@ class FixedTotalsCards extends StatelessWidget {
         children: [
           Expanded(
             child: _SummaryCard(
-              title: 'Fixed Expenses',
-              value: '€ ${_formatMoney(fixedExpensesTotal)}',
+              title: 'Expenses',
+              value: '€ ${_formatMoney(expensesTotal)}',
               icon: Icons.trending_down,
             ),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: _SummaryCard(
-              title: 'Fixed Incomes',
-              value: '€ ${_formatMoney(fixedIncomesTotal)}',
+              title: 'Incomes',
+              value: '€ ${_formatMoney(incomesTotal)}',
               icon: Icons.trending_up,
             ),
           ),

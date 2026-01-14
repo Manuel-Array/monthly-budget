@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:monthly_budget/app_state.dart';
-import 'package:monthly_budget/models/fixed_item.dart';
+import 'package:monthly_budget/models/item.dart';
 
-/// Bottom sheet used to add a new fixed expense or income.
-class AddFixedItemSheet extends StatefulWidget {
+/// Bottom sheet used to add a new expense or income.
+class AddItemSheet extends StatefulWidget {
   final bool isIncome;
-  final FixedItem? existingItem;
+  final Item? existingItem;
 
-  const AddFixedItemSheet({
+  const AddItemSheet({
     super.key,
     required this.isIncome,
     this.existingItem,
   });
 
   @override
-  State<AddFixedItemSheet> createState() =>
-      _AddFixedItemSheetState();
+  State<AddItemSheet> createState() =>
+      _AddItemSheetState();
 }
 
-class _AddFixedItemSheetState
-    extends State<AddFixedItemSheet> {
+class _AddItemSheetState
+    extends State<AddItemSheet> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   String? _errorMessage;
@@ -64,7 +64,7 @@ class _AddFixedItemSheetState
       return;
     }
 
-    final item = FixedItem(
+    final item = Item(
       id: DateTime.now()
           .microsecondsSinceEpoch
           .toString(),
@@ -78,11 +78,11 @@ class _AddFixedItemSheetState
     if (widget.existingItem == null) {
       // Add
       widget.isIncome
-          ? appState.addFixedIncome(item)
-          : appState.addFixedExpense(item);
+          ? appState.addIncome(item)
+          : appState.addExpense(item);
     } else {
       // Update: keep the same id
-      final updated = FixedItem(
+      final updated = Item(
         id: widget.existingItem!.id,
         title: title,
         amount: amount,
@@ -90,8 +90,8 @@ class _AddFixedItemSheetState
       );
 
       widget.isIncome
-          ? appState.updateFixedIncome(updated)
-          : appState.updateFixedExpense(updated);
+          ? appState.updateIncome(updated)
+          : appState.updateExpense(updated);
     }
 
     Navigator.of(context).pop();
@@ -115,11 +115,11 @@ class _AddFixedItemSheetState
           Text(
             widget.existingItem == null
                 ? (widget.isIncome
-                    ? 'Add Fixed Income'
-                    : 'Add Fixed Expense')
+                    ? 'Add Income'
+                    : 'Add Expense')
                 : (widget.isIncome
-                    ? 'Edit Fixed Income'
-                    : 'Edit Fixed Expense'),
+                    ? 'Edit Income'
+                    : 'Edit Expense'),
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),

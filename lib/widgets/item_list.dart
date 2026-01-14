@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:monthly_budget/app_state.dart';
-import 'package:monthly_budget/models/fixed_item.dart';
-import 'package:monthly_budget/widgets/add_fixed_item_sheet.dart';
+import 'package:monthly_budget/models/item.dart';
+import 'package:monthly_budget/widgets/add_item_sheet.dart';
 
-/// Displays either fixed expenses or fixed incomes
+/// Displays either expenses or incomes
 /// depending on [isIncome].
-class FixedList extends StatelessWidget {
+class ItemList extends StatelessWidget {
   final bool isIncome;
 
-  const FixedList({super.key, required this.isIncome});
+  const ItemList({super.key, required this.isIncome});
 
   String _formatMoney(double value) =>
       value.toStringAsFixed(2);
@@ -18,15 +18,15 @@ class FixedList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
-    final List<FixedItem> items =
-        isIncome ? appState.fixedIncomes : appState.fixedExpenses;
+    final List<Item> items =
+        isIncome ? appState.incomes : appState.expenses;
 
     if (items.isEmpty) {
       return Center(
         child: Text(
           isIncome
-              ? 'No fixed incomes yet.'
-              : 'No fixed expenses yet.',
+              ? 'No incomes yet.'
+              : 'No expenses yet.',
         ),
       );
     }
@@ -34,7 +34,7 @@ class FixedList extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 24),
       itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      separatorBuilder: (_, _) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
         final item = items[index];
 
@@ -52,10 +52,10 @@ class FixedList extends StatelessWidget {
             isIncome
                 ? context
                     .read<AppState>()
-                    .removeFixedIncome(item.id)
+                    .removeIncome(item.id)
                 : context
                     .read<AppState>()
-                    .removeFixedExpense(item.id);
+                    .removeExpense(item.id);
           },
           child: Card(
             child: ListTile(
@@ -66,7 +66,7 @@ class FixedList extends StatelessWidget {
                   enableDrag: true,
                   showDragHandle: true,
                   isScrollControlled: true,
-                  builder: (_) => AddFixedItemSheet(
+                  builder: (_) => AddItemSheet(
                     isIncome: isIncome,
                     existingItem: item,
                   ),
