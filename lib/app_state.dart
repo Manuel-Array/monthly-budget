@@ -6,7 +6,6 @@ class AppState extends ChangeNotifier {
   static final AppState _instance = AppState._internal();
   static AppState get instance => _instance;
 
-  // Monthly data
   final List<Item> _expenses = [];
   final List<Item> _incomes = [];
 
@@ -16,7 +15,7 @@ class AppState extends ChangeNotifier {
   List<Item> get incomes =>
       List.unmodifiable(_incomes);
 
-  // Derived values
+  // Derived
   double get totalExpenses =>
       _expenses.fold(0.0, (sum, item) => sum + item.amount);
 
@@ -26,7 +25,7 @@ class AppState extends ChangeNotifier {
   double get moneyLeft =>
       totalIncomes - totalExpenses;
 
-  // Mutations
+  // Updates
   void addExpense(Item item) {
     _expenses.add(item);
     notifyListeners();
@@ -68,12 +67,12 @@ class AppState extends ChangeNotifier {
     if (_expenses.isNotEmpty || _incomes.isNotEmpty) return;
 
     _incomes.add(
-      Item(id: 'inc1', title: 'Salary', amount: 1800, isRecurring: true),
+      Item(id: 'inc1', title: 'Salary', amount: 1800, isRecurring: true, tags: ['Work']),
     );
 
     _expenses.addAll([
-      Item(id: 'exp1', title: 'Rent', amount: 650, isRecurring: true),
-      Item(id: 'exp2', title: 'Internet', amount: 29.99, isRecurring: true),
+      Item(id: 'exp1', title: 'Rent', amount: 650, isRecurring: true, tags: ['Home']),
+      Item(id: 'exp2', title: 'Internet', amount: 29.99, isRecurring: true, tags: ['Home', 'Subscriptions']),
     ]);
 
     notifyListeners();
