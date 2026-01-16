@@ -259,14 +259,22 @@ class _AddItemSheetState
             ),
           ],
           const SizedBox(height: 14),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: _save,
-              child: Text(
-                widget.existingItem == null
-                    ? 'Save'
-                    : 'Save changes',
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: _save,
+                style: FilledButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  widget.existingItem == null
+                      ? 'Save'
+                      : 'Save changes',
+                ),
               ),
             ),
           ),
