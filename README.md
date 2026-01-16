@@ -1,21 +1,19 @@
 # Monthly Budget
 
-A simple personal finance app built with **Flutter** to keep track of fixed monthly incomes and expenses and quickly see how much money is left.
+A simple personal finance app built with **Flutter** to track monthly incomes and expenses and quickly see how much money is left.
 
 ---
 
-## Features (current)
+## Features
 
-* Add fixed monthly expenses
-* Add fixed monthly incomes
-* Automatic calculation of:
-  * total fixed expenses
-  * total fixed incomes
-  * money left (incomes - expenses)
+* Add monthly expenses and incomes
+* Mark items as recurring (monthly) or one-time
+* Tag items for categorization (e.g. "Home", "Work", "Subscriptions")
+* Automatic calculation of totals and money left
 * Swipe to delete items
 * Edit existing items
 
-Note: Demo data is temporarily seeded at startup to make development and UI testing easier.
+Note: Demo data is temporarily seeded at startup for development.
 
 ---
 
@@ -49,7 +47,7 @@ Note: Demo data is temporarily seeded at startup to make development and UI test
 Example:
 
 ```dart
-context.read<AppState>().addFixedExpense(item);
+context.read<AppState>().addExpense(item);
 ```
 
 ---
@@ -63,7 +61,7 @@ context.read<AppState>().addFixedExpense(item);
 * Variables & methods: `camelCase`
 * Widgets:
   * Pages → `SomethingPage`
-  * Reusable widgets → descriptive nouns (`SummaryCards`, `FixedList`)
+  * Reusable widgets → descriptive nouns (`SummaryCards`, `ItemList`)
 
 ### State
 
@@ -82,6 +80,6 @@ context.read<AppState>().addFixedExpense(item);
 ## Planned Features
 
 * Persistent storage (SharedPreferences or local DB)
-* Monthly reset logic
-* Variable (non-recurring) expenses
-* Categories & statistics
+* Monthly cycles and reset logic
+* Filter by tags or recurring status
+* Statistics and reports
