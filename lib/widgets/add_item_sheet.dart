@@ -26,6 +26,8 @@ class _AddItemSheetState
   final _amountController = TextEditingController();
   String? _errorMessage;
   bool _isRecurring = false;
+  Set<String> _selectedTags = {};
+  final Set<String> _sessionTags = {};
 
   @override
   void initState() {
@@ -36,6 +38,7 @@ class _AddItemSheetState
       _titleController.text = item.title;
       _amountController.text = item.amount.toStringAsFixed(2);
       _isRecurring = item.isRecurring;
+      _selectedTags = item.tags.toSet();
     }
   }
 
@@ -71,6 +74,7 @@ class _AddItemSheetState
       title: title,
       amount: amount,
       isRecurring: _isRecurring,
+      tags: _selectedTags.toList(),
     );
 
     final appState = context.read<AppState>();
@@ -87,6 +91,7 @@ class _AddItemSheetState
         title: title,
         amount: amount,
         isRecurring: _isRecurring,
+        tags: _selectedTags.toList(),
       );
 
       widget.isIncome
@@ -95,6 +100,55 @@ class _AddItemSheetState
     }
 
     Navigator.of(context).pop();
+  }
+
+  void _showAddTagDialog() {
+    final controller = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('New tag'),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: const InputDecoration(
+            hintText: 'Tag name',
+            border: OutlineInputBorder(),
+          ),
+          textCapitalization: TextCapitalization.words,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              final tagName = controller.text.trim();
+              if (tagName.isEmpty) return;
+
+              final allTags = {
+                ...context.read<AppState>().allTags,
+                ..._sessionTags
+              };
+              final isDuplicate = allTags.any(
+                (t) => t.toLowerCase() == tagName.toLowerCase(),
+              );
+
+              if (!isDuplicate) {
+                setState(() {
+                  _sessionTags.add(tagName);
+                  _selectedTags.add(tagName);
+                });
+              }
+              Navigator.pop(dialogContext);
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -149,6 +203,46 @@ class _AddItemSheetState
             title: const Text('Recurring monthly'),
             controlAffinity: ListTileControlAffinity.leading,
             contentPadding: EdgeInsets.zero,
+          ),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Tags',
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                for (final tag in {
+                  ...context.watch<AppState>().allTags,
+                  ..._sessionTags
+                })
+                  FilterChip(
+                    label: Text(tag),
+                    selected: _selectedTags.contains(tag),
+                    onSelected: (selected) {
+                      setState(() {
+                        if (selected) {
+                          _selectedTags.add(tag);
+                        } else {
+                          _selectedTags.remove(tag);
+                        }
+                      });
+                    },
+                  ),
+                ActionChip(
+                  avatar: const Icon(Icons.add, size: 18),
+                  label: const Text('Add tag'),
+                  onPressed: _showAddTagDialog,
+                ),
+              ],
+            ),
           ),
           if (_errorMessage != null) ...[
             const SizedBox(height: 10),

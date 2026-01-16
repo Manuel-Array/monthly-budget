@@ -25,6 +25,18 @@ class AppState extends ChangeNotifier {
   double get moneyLeft =>
       totalIncomes - totalExpenses;
 
+  /// All unique tags from both expenses and incomes
+  Set<String> get allTags {
+    final tags = <String>{};
+    for (final item in _expenses) {
+      tags.addAll(item.tags);
+    }
+    for (final item in _incomes) {
+      tags.addAll(item.tags);
+    }
+    return tags;
+  }
+
   // Updates
   void addExpense(Item item) {
     _expenses.add(item);
