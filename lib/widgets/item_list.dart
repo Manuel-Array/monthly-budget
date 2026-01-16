@@ -76,8 +76,6 @@ class ItemList extends StatelessWidget {
               title: Text(item.title),
               trailing:
                   Text('€ ${_formatMoney(item.amount)}'),
-              subtitle:
-                  Text(isIncome ? 'Income' : 'Expense'),
             ),
           ),
         );
