@@ -62,8 +62,8 @@ class _HomePageState extends State<HomePage>
           TabBar(
             controller: _tabController,
             tabs: const [
-              Tab(text: 'Expenses'),
               Tab(text: 'Incomes'),
+              Tab(text: 'Expenses'),
             ],
           ),
           TotalsCards(
@@ -75,8 +75,8 @@ class _HomePageState extends State<HomePage>
             child: TabBarView(
               controller: _tabController,
               children: const [
-                ItemList(isIncome: false),
                 ItemList(isIncome: true),
+                ItemList(isIncome: false),
               ],
             ),
           ),
@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage>
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          final isIncome = _tabController.index == 1;
+          final isIncome = _tabController.index == 0;
           _openAddSheet(isIncome: isIncome);
         },
         icon: const Icon(Icons.add),
