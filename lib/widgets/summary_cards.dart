@@ -64,17 +64,17 @@ class TotalsCards extends StatelessWidget {
         children: [
           Expanded(
             child: _SummaryCard(
-              title: 'Expenses',
-              value: '€ ${_formatMoney(expensesTotal)}',
-              icon: Icons.trending_down,
+              title: 'Incomes',
+              value: '€ ${_formatMoney(incomesTotal)}',
+              icon: Icons.trending_up,
             ),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: _SummaryCard(
-              title: 'Incomes',
-              value: '€ ${_formatMoney(incomesTotal)}',
-              icon: Icons.trending_up,
+              title: 'Expenses',
+              value: '€ ${_formatMoney(expensesTotal)}',
+              icon: Icons.trending_down,
             ),
           ),
         ],

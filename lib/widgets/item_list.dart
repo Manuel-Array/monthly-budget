@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:monthly_budget/app_state.dart';
-import 'package:monthly_budget/models/item.dart';
 import 'package:monthly_budget/widgets/add_item_sheet.dart';
 
 /// Displays either expenses or incomes
