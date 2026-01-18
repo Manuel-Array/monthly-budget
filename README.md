@@ -12,8 +12,7 @@ A simple personal finance app built with **Flutter** to track monthly incomes an
 * Automatic calculation of totals and money left
 * Swipe to delete items
 * Edit existing items
-
-Note: Demo data is temporarily seeded at startup for development.
+* Local persistence (data survives app restarts)
 
 ---
 
@@ -79,7 +78,6 @@ context.read<AppState>().addExpense(item);
 
 ## Planned Features
 
-* Persistent storage (SharedPreferences or local DB)
 * Monthly cycles and reset logic
 * Filter by tags or recurring status
 * Statistics and reports
