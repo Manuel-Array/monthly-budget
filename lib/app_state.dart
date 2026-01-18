@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 import 'models/item.dart';
 
 class AppState extends ChangeNotifier {
@@ -8,6 +9,34 @@ class AppState extends ChangeNotifier {
 
   final List<Item> _expenses = [];
   final List<Item> _incomes = [];
+
+  late final Box<Item> _expensesBox;
+  late final Box<Item> _incomesBox;
+
+  /// Initialize AppState by loading persisted data.
+  /// Must be called once before using AppState.
+  Future<void> init() async {
+    _expensesBox = Hive.box<Item>('expenses');
+    _incomesBox = Hive.box<Item>('incomes');
+
+    _expenses.addAll(_expensesBox.values);
+    _incomes.addAll(_incomesBox.values);
+
+    // Seed example income only on first run (both boxes empty)
+    if (_expenses.isEmpty && _incomes.isEmpty) {
+      final salary = Item(
+        id: 'inc1',
+        title: 'Salary',
+        amount: 1800,
+        isRecurring: true,
+        tags: ['Work'],
+      );
+      _incomes.add(salary);
+      _incomesBox.put(salary.id, salary);
+    }
+
+    notifyListeners();
+  }
 
   List<Item> get expenses =>
       List.unmodifiable(_expenses);
@@ -37,14 +66,17 @@ class AppState extends ChangeNotifier {
     return tags;
   }
 
-  // Updates
+  // CRUD operations
+
   void addExpense(Item item) {
     _expenses.add(item);
+    _expensesBox.put(item.id, item);
     notifyListeners();
   }
 
   void addIncome(Item item) {
     _incomes.add(item);
+    _incomesBox.put(item.id, item);
     notifyListeners();
   }
 
@@ -53,6 +85,7 @@ class AppState extends ChangeNotifier {
     if (index == -1) return;
 
     _expenses[index] = updated;
+    _expensesBox.put(updated.id, updated);
     notifyListeners();
   }
 
@@ -61,32 +94,19 @@ class AppState extends ChangeNotifier {
     if (index == -1) return;
 
     _incomes[index] = updated;
+    _incomesBox.put(updated.id, updated);
     notifyListeners();
   }
 
   void removeExpense(String id) {
     _expenses.removeWhere((e) => e.id == id);
+    _expensesBox.delete(id);
     notifyListeners();
   }
 
   void removeIncome(String id) {
     _incomes.removeWhere((e) => e.id == id);
-    notifyListeners();
-  }
-
-  // Dev-only helper to avoid empty UI at startup
-  void seedDemoDataIfEmpty() {
-    if (_expenses.isNotEmpty || _incomes.isNotEmpty) return;
-
-    _incomes.add(
-      Item(id: 'inc1', title: 'Salary', amount: 1800, isRecurring: true, tags: ['Work']),
-    );
-
-    _expenses.addAll([
-      Item(id: 'exp1', title: 'Rent', amount: 650, isRecurring: true, tags: ['Home']),
-      Item(id: 'exp2', title: 'Internet', amount: 29.99, isRecurring: true, tags: ['Home', 'Subscriptions']),
-    ]);
-
+    _incomesBox.delete(id);
     notifyListeners();
   }
 }

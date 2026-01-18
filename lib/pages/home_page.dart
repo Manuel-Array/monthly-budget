@@ -20,13 +20,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-
     _tabController = TabController(length: 2, vsync: this);
-
-    // Seed demo data only once, after first build
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AppState>().seedDemoDataIfEmpty();
-    });
   }
 
   @override

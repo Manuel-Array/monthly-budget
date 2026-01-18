@@ -15,6 +15,8 @@ Future<void> main() async {
   await Hive.openBox<Item>('expenses');
   await Hive.openBox<Item>('incomes');
 
+  await AppState.instance.init();
+
   runApp(const MyApp());
 }
 
