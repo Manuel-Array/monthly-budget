@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:monthly_budget/app_state.dart';
+import 'package:monthly_budget/models/item.dart';
+import 'package:monthly_budget/models/item_adapter.dart';
 import 'package:monthly_budget/pages/home_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(ItemAdapter());
+  await Hive.openBox<Item>('expenses');
+  await Hive.openBox<Item>('incomes');
+
   runApp(const MyApp());
 }
 
