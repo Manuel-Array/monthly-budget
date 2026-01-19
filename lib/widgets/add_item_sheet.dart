@@ -156,7 +156,7 @@ class _AddItemSheetState
     final bottomPadding =
         MediaQuery.of(context).viewInsets.bottom;
 
-    return Padding(
+    return SingleChildScrollView(
       padding: EdgeInsets.fromLTRB(
         16,
         16,
