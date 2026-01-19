@@ -86,13 +86,12 @@ class _HomePageState extends State<HomePage>
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           final isIncome = _tabController.index == 0;
           _openAddSheet(isIncome: isIncome);
         },
-        icon: const Icon(Icons.add),
-        label: const Text('Add'),
+        child: const Icon(Icons.add),
       ),
     );
   }
