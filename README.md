@@ -1,6 +1,6 @@
 # Monthly Budget
 
-A simple personal finance app built with **Flutter** to track monthly incomes and expenses and quickly see how much money is left.
+A simple personal finance app built with **Flutter** to track monthly incomes and expenses and quickly see your balance.
 
 ---
 
@@ -9,10 +9,11 @@ A simple personal finance app built with **Flutter** to track monthly incomes an
 * Add monthly expenses and incomes
 * Mark items as recurring (monthly) or one-time
 * Tag items for categorization (e.g. "Home", "Work", "Subscriptions")
-* Automatic calculation of totals and money left
+* Automatic calculation of totals and balance
 * Swipe to delete items
 * Edit existing items
 * Local persistence (data survives app restarts)
+* Settings with tag management (rename/delete tags)
 
 ---
 
@@ -60,7 +61,7 @@ context.read<AppState>().addExpense(item);
 * Variables & methods: `camelCase`
 * Widgets:
   * Pages → `SomethingPage`
-  * Reusable widgets → descriptive nouns (`SummaryCards`, `ItemList`)
+  * Reusable widgets → descriptive nouns (`BalanceCard`, `ItemList`)
 
 ### State
 

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-/// Displays the money left card prominently.
-class MoneyLeftCard extends StatelessWidget {
-  final double moneyLeft;
+/// Displays the balance card prominently.
+class BalanceCard extends StatelessWidget {
+  final double balance;
 
-  const MoneyLeftCard({
+  const BalanceCard({
     super.key,
-    required this.moneyLeft,
+    required this.balance,
   });
 
   String _formatMoney(double value) =>
@@ -26,12 +26,12 @@ class MoneyLeftCard extends StatelessWidget {
               Icon(Icons.account_balance_wallet, size: 32),
               const SizedBox(height: 8),
               Text(
-                'Money Left',
+                'Balance',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(height: 4),
               Text(
-                '€ ${_formatMoney(moneyLeft)}',
+                '€ ${_formatMoney(balance)}',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ],
@@ -43,14 +43,14 @@ class MoneyLeftCard extends StatelessWidget {
 }
 
 /// Displays expenses and incomes totals side by side.
-class TotalsCards extends StatelessWidget {
-  final double expensesTotal;
-  final double incomesTotal;
+class TotalsCard extends StatelessWidget {
+  final double totalExpenses;
+  final double totalIncomes;
 
-  const TotalsCards({
+  const TotalsCard({
     super.key,
-    required this.expensesTotal,
-    required this.incomesTotal,
+    required this.totalExpenses,
+    required this.totalIncomes,
   });
 
   String _formatMoney(double value) =>
@@ -65,7 +65,7 @@ class TotalsCards extends StatelessWidget {
           Expanded(
             child: _SummaryCard(
               title: 'Incomes',
-              value: '€ ${_formatMoney(incomesTotal)}',
+              value: '€ ${_formatMoney(totalIncomes)}',
               icon: Icons.trending_up,
             ),
           ),
@@ -73,7 +73,7 @@ class TotalsCards extends StatelessWidget {
           Expanded(
             child: _SummaryCard(
               title: 'Expenses',
-              value: '€ ${_formatMoney(expensesTotal)}',
+              value: '€ ${_formatMoney(totalExpenses)}',
               icon: Icons.trending_down,
             ),
           ),
@@ -83,7 +83,7 @@ class TotalsCards extends StatelessWidget {
   }
 }
 
-/// Internal reusable card used only by SummaryCards.
+/// Internal reusable card used only by TotalsCard.
 class _SummaryCard extends StatelessWidget {
   final String title;
   final String value;

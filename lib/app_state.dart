@@ -51,7 +51,7 @@ class AppState extends ChangeNotifier {
   double get totalIncomes =>
       _incomes.fold(0.0, (sum, item) => sum + item.amount);
 
-  double get moneyLeft =>
+  double get balance =>
       totalIncomes - totalExpenses;
 
   /// All unique tags from both expenses and incomes

@@ -60,8 +60,8 @@ class _HomePageState extends State<HomePage>
       ),
       body: Column(
         children: [
-          MoneyLeftCard(
-            moneyLeft: appState.moneyLeft,
+          BalanceCard(
+            balance: appState.balance,
           ),
           TabBar(
             controller: _tabController,
@@ -70,9 +70,9 @@ class _HomePageState extends State<HomePage>
               Tab(text: 'Expenses'),
             ],
           ),
-          TotalsCards(
-            expensesTotal: appState.totalExpenses,
-            incomesTotal: appState.totalIncomes,
+          TotalsCard(
+            totalExpenses: appState.totalExpenses,
+            totalIncomes: appState.totalIncomes,
           ),
           const SizedBox(height: 8),
           Expanded(
