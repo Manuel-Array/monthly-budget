@@ -109,4 +109,74 @@ class AppState extends ChangeNotifier {
     _incomesBox.delete(id);
     notifyListeners();
   }
+
+  // Tag operations
+
+  /// Rename a tag across all items
+  void renameTag(String oldName, String newName) {
+    if (oldName == newName) return;
+
+    for (int i = 0; i < _expenses.length; i++) {
+      if (_expenses[i].tags.contains(oldName)) {
+        final updated = Item(
+          id: _expenses[i].id,
+          title: _expenses[i].title,
+          amount: _expenses[i].amount,
+          isRecurring: _expenses[i].isRecurring,
+          tags: _expenses[i].tags.map((t) => t == oldName ? newName : t).toList(),
+        );
+        _expenses[i] = updated;
+        _expensesBox.put(updated.id, updated);
+      }
+    }
+
+    for (int i = 0; i < _incomes.length; i++) {
+      if (_incomes[i].tags.contains(oldName)) {
+        final updated = Item(
+          id: _incomes[i].id,
+          title: _incomes[i].title,
+          amount: _incomes[i].amount,
+          isRecurring: _incomes[i].isRecurring,
+          tags: _incomes[i].tags.map((t) => t == oldName ? newName : t).toList(),
+        );
+        _incomes[i] = updated;
+        _incomesBox.put(updated.id, updated);
+      }
+    }
+
+    notifyListeners();
+  }
+
+  /// Delete a tag from all items (items remain, just lose the tag)
+  void deleteTag(String tagName) {
+    for (int i = 0; i < _expenses.length; i++) {
+      if (_expenses[i].tags.contains(tagName)) {
+        final updated = Item(
+          id: _expenses[i].id,
+          title: _expenses[i].title,
+          amount: _expenses[i].amount,
+          isRecurring: _expenses[i].isRecurring,
+          tags: _expenses[i].tags.where((t) => t != tagName).toList(),
+        );
+        _expenses[i] = updated;
+        _expensesBox.put(updated.id, updated);
+      }
+    }
+
+    for (int i = 0; i < _incomes.length; i++) {
+      if (_incomes[i].tags.contains(tagName)) {
+        final updated = Item(
+          id: _incomes[i].id,
+          title: _incomes[i].title,
+          amount: _incomes[i].amount,
+          isRecurring: _incomes[i].isRecurring,
+          tags: _incomes[i].tags.where((t) => t != tagName).toList(),
+        );
+        _incomes[i] = updated;
+        _incomesBox.put(updated.id, updated);
+      }
+    }
+
+    notifyListeners();
+  }
 }
