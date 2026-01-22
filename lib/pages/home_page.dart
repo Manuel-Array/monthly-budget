@@ -6,6 +6,7 @@ import 'package:monthly_budget/pages/settings_page.dart';
 import 'package:monthly_budget/widgets/summary_cards.dart';
 import 'package:monthly_budget/widgets/item_list.dart';
 import 'package:monthly_budget/widgets/add_item_sheet.dart';
+import 'package:monthly_budget/widgets/month_selector.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -60,6 +61,7 @@ class _HomePageState extends State<HomePage>
       ),
       body: Column(
         children: [
+          const MonthSelector(),
           BalanceCard(
             balance: appState.balance,
           ),
