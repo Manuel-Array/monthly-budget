@@ -9,7 +9,8 @@ A simple personal finance app built with **Flutter** to track monthly incomes an
 * Add monthly expenses and incomes
 * Mark items as recurring (monthly) or one-time
 * Tag items for categorization (e.g. "Home", "Work", "Subscriptions")
-* Automatic calculation of totals and balance
+* Month selection with automatic filtering
+* Automatic calculation of totals and balance per month
 * Swipe to delete items
 * Edit existing items
 * Local persistence (data survives app restarts)
@@ -79,6 +80,5 @@ context.read<AppState>().addExpense(item);
 
 ## Planned Features
 
-* Monthly cycles and reset logic
 * Filter by tags or recurring status
 * Statistics and reports
