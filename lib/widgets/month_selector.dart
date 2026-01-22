@@ -11,6 +11,7 @@ class MonthSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
     final month = appState.selectedMonth;
+    final iconColor = Theme.of(context).colorScheme.onSurfaceVariant;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -20,6 +21,10 @@ class MonthSelector extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.chevron_left),
             onPressed: appState.goToPreviousMonth,
+            iconSize: 20,
+            color: iconColor,
+            visualDensity: VisualDensity.compact,
+            tooltip: 'Previous month',
           ),
           InkWell(
             onTap: () => _showMonthPicker(context, appState),
@@ -35,6 +40,10 @@ class MonthSelector extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.chevron_right),
             onPressed: appState.goToNextMonth,
+            iconSize: 20,
+            color: iconColor,
+            visualDensity: VisualDensity.compact,
+            tooltip: 'Next month',
           ),
         ],
       ),
