@@ -13,6 +13,7 @@ class ItemAdapter extends TypeAdapter<Item> {
       amount: reader.readDouble(),
       isRecurring: reader.readBool(),
       tags: reader.readStringList(),
+      date: _readNullableDateTime(reader),
     );
   }
 
@@ -23,5 +24,19 @@ class ItemAdapter extends TypeAdapter<Item> {
     writer.writeDouble(obj.amount);
     writer.writeBool(obj.isRecurring);
     writer.writeStringList(obj.tags);
+    _writeNullableDateTime(writer, obj.date);
+  }
+
+  DateTime? _readNullableDateTime(BinaryReader reader) {
+    final hasDate = reader.readBool();
+    if (!hasDate) return null;
+    return DateTime.fromMillisecondsSinceEpoch(reader.readInt());
+  }
+
+  void _writeNullableDateTime(BinaryWriter writer, DateTime? date) {
+    writer.writeBool(date != null);
+    if (date != null) {
+      writer.writeInt(date.millisecondsSinceEpoch);
+    }
   }
 }

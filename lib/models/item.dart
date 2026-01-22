@@ -5,6 +5,7 @@ class Item {
   final double amount;
   final bool isRecurring;
   final List<String> tags;
+  final DateTime? date;
 
   const Item({
     required this.id,
@@ -12,5 +13,6 @@ class Item {
     required this.amount,
     this.isRecurring = false,
     this.tags = const [],
+    this.date,
   });
 }
