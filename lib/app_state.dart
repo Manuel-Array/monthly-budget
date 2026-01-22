@@ -13,6 +13,8 @@ class AppState extends ChangeNotifier {
   late final Box<Item> _expensesBox;
   late final Box<Item> _incomesBox;
 
+  DateTime _selectedMonth = DateTime(DateTime.now().year, DateTime.now().month);
+
   /// Initialize AppState by loading persisted data.
   /// Must be called once before using AppState.
   Future<void> init() async {
@@ -53,6 +55,25 @@ class AppState extends ChangeNotifier {
 
   double get balance =>
       totalIncomes - totalExpenses;
+
+  // Month selection
+
+  DateTime get selectedMonth => _selectedMonth;
+
+  void setSelectedMonth(DateTime month) {
+    _selectedMonth = DateTime(month.year, month.month);
+    notifyListeners();
+  }
+
+  void goToPreviousMonth() {
+    _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month - 1);
+    notifyListeners();
+  }
+
+  void goToNextMonth() {
+    _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + 1);
+    notifyListeners();
+  }
 
   /// All unique tags from both expenses and incomes
   Set<String> get allTags {
