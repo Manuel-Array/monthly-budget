@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:monthly_budget/app_state.dart';
@@ -28,6 +29,7 @@ class _AddItemSheetState
   bool _isRecurring = false;
   Set<String> _selectedTags = {};
   final Set<String> _sessionTags = {};
+  late DateTime _date;
 
   @override
   void initState() {
@@ -39,6 +41,9 @@ class _AddItemSheetState
       _amountController.text = item.amount.toStringAsFixed(2);
       _isRecurring = item.isRecurring;
       _selectedTags = item.tags.toSet();
+      _date = item.date ?? DateTime.now();
+    } else {
+      _date = DateTime.now();
     }
   }
 
@@ -75,6 +80,7 @@ class _AddItemSheetState
       amount: amount,
       isRecurring: _isRecurring,
       tags: _selectedTags.toList(),
+      date: _date,
     );
 
     final appState = context.read<AppState>();
@@ -92,6 +98,7 @@ class _AddItemSheetState
         amount: amount,
         isRecurring: _isRecurring,
         tags: _selectedTags.toList(),
+        date: _date,
       );
 
       widget.isIncome
@@ -100,6 +107,18 @@ class _AddItemSheetState
     }
 
     Navigator.of(context).pop();
+  }
+
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() => _date = picked);
+    }
   }
 
   void _showAddTagDialog() {
@@ -194,6 +213,24 @@ class _AddItemSheetState
             keyboardType:
                 const TextInputType.numberWithOptions(
                     decimal: true),
+          ),
+          const SizedBox(height: 12),
+          InkWell(
+            onTap: _pickDate,
+            borderRadius: BorderRadius.circular(8),
+            child: InputDecorator(
+              decoration: const InputDecoration(
+                labelText: 'Date',
+                border: OutlineInputBorder(),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(DateFormat.yMMMd().format(_date)),
+                  const Icon(Icons.calendar_today, size: 20),
+                ],
+              ),
+            ),
           ),
           const SizedBox(height: 12),
           CheckboxListTile(
