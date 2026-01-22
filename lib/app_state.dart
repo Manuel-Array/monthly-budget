@@ -32,6 +32,7 @@ class AppState extends ChangeNotifier {
         amount: 1800,
         isRecurring: true,
         tags: ['Work'],
+        date: DateTime.now(),
       );
       _incomes.add(salary);
       _incomesBox.put(salary.id, salary);
@@ -40,18 +41,38 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Filtered by selected month
   List<Item> get expenses =>
-      List.unmodifiable(_expenses);
+      List.unmodifiable(_expenses.where(_shouldIncludeInMonth).toList());
 
   List<Item> get incomes =>
-      List.unmodifiable(_incomes);
+      List.unmodifiable(_incomes.where(_shouldIncludeInMonth).toList());
 
-  // Derived
+  // Unfiltered access (for tag operations)
+  List<Item> get allExpenses => List.unmodifiable(_expenses);
+  List<Item> get allIncomes => List.unmodifiable(_incomes);
+
+  bool _shouldIncludeInMonth(Item item) {
+    if (item.date == null) return false;
+
+    final itemMonth = DateTime(item.date!.year, item.date!.month);
+    final selected = DateTime(_selectedMonth.year, _selectedMonth.month);
+
+    if (item.isRecurring) {
+      // Recurring: show from start date onward
+      return !itemMonth.isAfter(selected);
+    } else {
+      // One-time: exact month match
+      return itemMonth == selected;
+    }
+  }
+
+  // Derived (uses filtered lists)
   double get totalExpenses =>
-      _expenses.fold(0.0, (sum, item) => sum + item.amount);
+      expenses.fold(0.0, (sum, item) => sum + item.amount);
 
   double get totalIncomes =>
-      _incomes.fold(0.0, (sum, item) => sum + item.amount);
+      incomes.fold(0.0, (sum, item) => sum + item.amount);
 
   double get balance =>
       totalIncomes - totalExpenses;
