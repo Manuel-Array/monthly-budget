@@ -52,6 +52,14 @@ class _HomePageState extends State<HomePage>
           child: ListView(
             children: [
               ListTile(
+                leading: const Icon(Icons.label_outline),
+                title: const Text('Show tags'),
+                trailing: Switch(
+                  value: appState.showTags,
+                  onChanged: (_) => appState.toggleShowTags(),
+                ),
+              ),
+              ListTile(
                 leading: const Icon(Icons.settings),
                 title: const Text('Settings'),
                 onTap: () {
