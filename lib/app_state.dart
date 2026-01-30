@@ -15,6 +15,8 @@ class AppState extends ChangeNotifier {
 
   DateTime _selectedMonth = DateTime(DateTime.now().year, DateTime.now().month);
 
+  bool _showTags = true;
+
   /// Initialize AppState by loading persisted data.
   /// Must be called once before using AppState.
   Future<void> init() async {
@@ -93,6 +95,15 @@ class AppState extends ChangeNotifier {
 
   void goToNextMonth() {
     _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + 1);
+    notifyListeners();
+  }
+
+  // Show tags toggle
+
+  bool get showTags => _showTags;
+
+  void toggleShowTags() {
+    _showTags = !_showTags;
     notifyListeners();
   }
 
