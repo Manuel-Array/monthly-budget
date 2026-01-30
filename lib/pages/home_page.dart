@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:monthly_budget/app_state.dart';
 import 'package:monthly_budget/pages/settings_page.dart';
+import 'package:monthly_budget/pages/tags_page.dart';
 import 'package:monthly_budget/widgets/summary_cards.dart';
 import 'package:monthly_budget/widgets/item_list.dart';
 import 'package:monthly_budget/widgets/add_item_sheet.dart';
@@ -58,6 +59,18 @@ class _HomePageState extends State<HomePage>
                   value: appState.showTags,
                   onChanged: (_) => appState.toggleShowTags(),
                 ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.label_outline),
+                title: const Text('Tags'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const TagsPage()),
+                  );
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.settings),
