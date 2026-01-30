@@ -7,21 +7,33 @@ class AppState extends ChangeNotifier {
   static final AppState _instance = AppState._internal();
   static AppState get instance => _instance;
 
+  static const currencies = {
+    'EUR': '€',
+    'USD': '\$',
+    'GBP': '£',
+    'CHF': 'Fr.',
+  };
+
   final List<Item> _expenses = [];
   final List<Item> _incomes = [];
 
   late final Box<Item> _expensesBox;
   late final Box<Item> _incomesBox;
+  late final Box _settingsBox;
 
   DateTime _selectedMonth = DateTime(DateTime.now().year, DateTime.now().month);
 
   bool _showTags = true;
+  String _currencyCode = 'EUR';
 
   /// Initialize AppState by loading persisted data.
   /// Must be called once before using AppState.
   Future<void> init() async {
     _expensesBox = Hive.box<Item>('expenses');
     _incomesBox = Hive.box<Item>('incomes');
+    _settingsBox = Hive.box('settings');
+
+    _currencyCode = _settingsBox.get('currency', defaultValue: 'EUR');
 
     _expenses.addAll(_expensesBox.values);
     _incomes.addAll(_incomesBox.values);
@@ -104,6 +116,17 @@ class AppState extends ChangeNotifier {
 
   void toggleShowTags() {
     _showTags = !_showTags;
+    notifyListeners();
+  }
+
+  // Currency
+
+  String get currencyCode => _currencyCode;
+  String get currencySymbol => currencies[_currencyCode] ?? '€';
+
+  void setCurrency(String code) {
+    _currencyCode = code;
+    _settingsBox.put('currency', code);
     notifyListeners();
   }
 

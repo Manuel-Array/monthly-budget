@@ -14,6 +14,7 @@ Future<void> main() async {
   Hive.registerAdapter(ItemAdapter());
   await Hive.openBox<Item>('expenses');
   await Hive.openBox<Item>('incomes');
+  await Hive.openBox('settings');
 
   await AppState.instance.init();
 
