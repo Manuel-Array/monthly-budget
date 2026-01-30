@@ -76,7 +76,7 @@ class ItemList extends StatelessWidget {
               subtitle: appState.showTags && item.tags.isNotEmpty
                   ? Text(item.tags.join(', '))
                   : null,
-              trailing: Text('€ ${_formatMoney(item.amount)}'),
+              trailing: Text('${appState.currencySymbol} ${_formatMoney(item.amount)}'),
             ),
           ),
         );

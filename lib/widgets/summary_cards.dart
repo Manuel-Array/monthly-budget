@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:monthly_budget/app_state.dart';
 
 /// Displays the balance card prominently.
 class BalanceCard extends StatelessWidget {
@@ -14,6 +17,8 @@ class BalanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currencySymbol = context.watch<AppState>().currencySymbol;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
       child: Card(
@@ -31,7 +36,7 @@ class BalanceCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '€ ${_formatMoney(balance)}',
+                '$currencySymbol ${_formatMoney(balance)}',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ],
@@ -58,6 +63,8 @@ class TotalsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currencySymbol = context.watch<AppState>().currencySymbol;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
       child: Row(
@@ -65,7 +72,7 @@ class TotalsCard extends StatelessWidget {
           Expanded(
             child: _SummaryCard(
               title: 'Incomes',
-              value: '€ ${_formatMoney(totalIncomes)}',
+              value: '$currencySymbol ${_formatMoney(totalIncomes)}',
               icon: Icons.trending_up,
             ),
           ),
@@ -73,7 +80,7 @@ class TotalsCard extends StatelessWidget {
           Expanded(
             child: _SummaryCard(
               title: 'Expenses',
-              value: '€ ${_formatMoney(totalExpenses)}',
+              value: '$currencySymbol ${_formatMoney(totalExpenses)}',
               icon: Icons.trending_down,
             ),
           ),

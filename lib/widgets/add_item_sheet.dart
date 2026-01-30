@@ -206,9 +206,9 @@ class _AddItemSheetState
           const SizedBox(height: 12),
           TextField(
             controller: _amountController,
-            decoration: const InputDecoration(
-              labelText: 'Amount (EUR)',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: 'Amount (${context.watch<AppState>().currencyCode})',
+              border: const OutlineInputBorder(),
             ),
             keyboardType:
                 const TextInputType.numberWithOptions(
