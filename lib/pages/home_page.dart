@@ -47,14 +47,32 @@ class _HomePageState extends State<HomePage>
     final appState = context.watch<AppState>();
 
     return Scaffold(
+      endDrawer: Drawer(
+        child: SafeArea(
+          child: ListView(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Settings'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SettingsPage()),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       appBar: AppBar(
         title: const Text('Monthly Budget'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SettingsPage()),
+          Builder(
+            builder: (ctx) => IconButton(
+              icon: const Icon(Icons.more_vert),
+              onPressed: () => Scaffold.of(ctx).openEndDrawer(),
             ),
           ),
         ],
