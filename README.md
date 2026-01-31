@@ -14,6 +14,8 @@ A simple personal finance app built with **Flutter** to track monthly incomes an
 * Swipe to delete items
 * Edit existing items
 * Local persistence (data survives app restarts)
+* Currency selection (EUR, USD, GBP, CHF)
+* Toggle to show/hide tags on item cards
 * Settings with tag management (rename/delete tags)
 
 ---
