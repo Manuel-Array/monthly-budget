@@ -72,6 +72,61 @@ class _HomePageState extends State<HomePage>
                   );
                 },
               ),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Text(
+                  'Filters',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SegmentedButton<RecurringFilter>(
+                  segments: const [
+                    ButtonSegment(value: RecurringFilter.all, label: Text('All')),
+                    ButtonSegment(value: RecurringFilter.recurringOnly, label: Text('Recurring')),
+                    ButtonSegment(value: RecurringFilter.oneTimeOnly, label: Text('One-time')),
+                  ],
+                  selected: {appState.recurringFilter},
+                  onSelectionChanged: (selected) {
+                    appState.setRecurringFilter(selected.first);
+                  },
+                ),
+              ),
+              if (appState.allTags.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [
+                        for (final tag in appState.allTags)
+                          FilterChip(
+                            label: Text(tag),
+                            selected: appState.selectedTagFilters.contains(tag),
+                            onSelected: (_) => appState.toggleTagFilter(tag),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+              if (appState.hasActiveFilters)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: () => appState.clearFilters(),
+                      child: const Text('Clear filters'),
+                    ),
+                  ),
+                ),
+              const Divider(),
               ListTile(
                 leading: const Icon(Icons.settings),
                 title: const Text('Settings'),
