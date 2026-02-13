@@ -6,6 +6,47 @@ import 'package:monthly_budget/app_state.dart';
 class TagsPage extends StatelessWidget {
   const TagsPage({super.key});
 
+  void _showAddTagDialog(BuildContext context, AppState appState) {
+    final controller = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('New tag'),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: const InputDecoration(
+            hintText: 'Tag name',
+            border: OutlineInputBorder(),
+          ),
+          textCapitalization: TextCapitalization.words,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              final tagName = controller.text.trim();
+              if (tagName.isEmpty) return;
+
+              final isDuplicate = appState.allTags.any(
+                (t) => t.toLowerCase() == tagName.toLowerCase(),
+              );
+              if (isDuplicate) return;
+
+              appState.addTag(tagName);
+              Navigator.pop(dialogContext);
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
@@ -20,7 +61,7 @@ class TagsPage extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(24),
                 child: Text(
-                  'No tags yet.\nTags will appear here once you add them to your items.',
+                  'No tags yet.\nTap + to create one.',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey),
                 ),
@@ -30,6 +71,10 @@ class TagsPage extends StatelessWidget {
               itemCount: tags.length,
               itemBuilder: (context, index) => _TagTile(tag: tags[index]),
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddTagDialog(context, appState),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
