@@ -29,6 +29,7 @@ class AppState extends ChangeNotifier {
   String _currencyCode = 'EUR';
   RecurringFilter _recurringFilter = RecurringFilter.all;
   Set<String> _selectedTagFilters = {};
+  Set<String> _standaloneTags = {};
 
   /// Initialize AppState by loading persisted data.
   /// Must be called once before using AppState.
@@ -38,6 +39,8 @@ class AppState extends ChangeNotifier {
     _settingsBox = Hive.box('settings');
 
     _currencyCode = _settingsBox.get('currency', defaultValue: 'EUR');
+    final savedTags = _settingsBox.get('standaloneTags', defaultValue: <String>[]);
+    _standaloneTags = Set<String>.from(savedTags);
 
     _expenses.addAll(_expensesBox.values);
     _incomes.addAll(_incomesBox.values);
@@ -178,9 +181,9 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// All unique tags from both expenses and incomes
+  /// All unique tags from items and standalone tags
   Set<String> get allTags {
-    final tags = <String>{};
+    final tags = <String>{..._standaloneTags};
     for (final item in _expenses) {
       tags.addAll(item.tags);
     }
@@ -188,6 +191,12 @@ class AppState extends ChangeNotifier {
       tags.addAll(item.tags);
     }
     return tags;
+  }
+
+  void addTag(String name) {
+    _standaloneTags.add(name);
+    _settingsBox.put('standaloneTags', _standaloneTags.toList());
+    notifyListeners();
   }
 
   // CRUD operations
@@ -236,9 +245,14 @@ class AppState extends ChangeNotifier {
 
   // Tag operations
 
-  /// Rename a tag across all items
+  /// Rename a tag across all items and standalone tags
   void renameTag(String oldName, String newName) {
     if (oldName == newName) return;
+
+    if (_standaloneTags.remove(oldName)) {
+      _standaloneTags.add(newName);
+      _settingsBox.put('standaloneTags', _standaloneTags.toList());
+    }
 
     for (int i = 0; i < _expenses.length; i++) {
       if (_expenses[i].tags.contains(oldName)) {
@@ -271,8 +285,11 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Delete a tag from all items (items remain, just lose the tag)
+  /// Delete a tag from all items and standalone tags
   void deleteTag(String tagName) {
+    _standaloneTags.remove(tagName);
+    _settingsBox.put('standaloneTags', _standaloneTags.toList());
+
     for (int i = 0; i < _expenses.length; i++) {
       if (_expenses[i].tags.contains(tagName)) {
         final updated = Item(
