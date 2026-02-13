@@ -17,6 +17,7 @@ A simple personal finance app built with **Flutter** to track monthly incomes an
 * Currency selection (EUR, USD, GBP, CHF)
 * Toggle to show/hide tags on item cards
 * Settings with tag management (rename/delete tags)
+* Filter items by tags or recurring status
 
 ---
 
@@ -82,5 +83,4 @@ context.read<AppState>().addExpense(item);
 
 ## Planned Features
 
-* Filter by tags or recurring status
 * Statistics and reports
