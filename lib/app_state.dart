@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'models/item.dart';
 
+enum RecurringFilter { all, recurringOnly, oneTimeOnly }
+
 class AppState extends ChangeNotifier {
   AppState._internal();
   static final AppState _instance = AppState._internal();
@@ -25,6 +27,8 @@ class AppState extends ChangeNotifier {
 
   bool _showTags = true;
   String _currencyCode = 'EUR';
+  RecurringFilter _recurringFilter = RecurringFilter.all;
+  Set<String> _selectedTagFilters = {};
 
   /// Initialize AppState by loading persisted data.
   /// Must be called once before using AppState.
@@ -55,16 +59,32 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Filtered by selected month
+  // Filtered by selected month + active filters
   List<Item> get expenses =>
-      List.unmodifiable(_expenses.where(_shouldIncludeInMonth).toList());
+      List.unmodifiable(_expenses
+          .where(_shouldIncludeInMonth)
+          .where(_matchesFilters)
+          .toList());
 
   List<Item> get incomes =>
-      List.unmodifiable(_incomes.where(_shouldIncludeInMonth).toList());
+      List.unmodifiable(_incomes
+          .where(_shouldIncludeInMonth)
+          .where(_matchesFilters)
+          .toList());
 
   // Unfiltered access (for tag operations)
   List<Item> get allExpenses => List.unmodifiable(_expenses);
   List<Item> get allIncomes => List.unmodifiable(_incomes);
+
+  bool _matchesFilters(Item item) {
+    if (_recurringFilter == RecurringFilter.recurringOnly && !item.isRecurring) return false;
+    if (_recurringFilter == RecurringFilter.oneTimeOnly && item.isRecurring) return false;
+
+    if (_selectedTagFilters.isNotEmpty &&
+        !item.tags.any((t) => _selectedTagFilters.contains(t))) return false;
+
+    return true;
+  }
 
   bool _shouldIncludeInMonth(Item item) {
     if (item.date == null) return false;
@@ -127,6 +147,34 @@ class AppState extends ChangeNotifier {
   void setCurrency(String code) {
     _currencyCode = code;
     _settingsBox.put('currency', code);
+    notifyListeners();
+  }
+
+  // Filters
+
+  RecurringFilter get recurringFilter => _recurringFilter;
+  Set<String> get selectedTagFilters => Set.unmodifiable(_selectedTagFilters);
+
+  bool get hasActiveFilters =>
+      _recurringFilter != RecurringFilter.all || _selectedTagFilters.isNotEmpty;
+
+  void setRecurringFilter(RecurringFilter filter) {
+    _recurringFilter = filter;
+    notifyListeners();
+  }
+
+  void toggleTagFilter(String tag) {
+    if (_selectedTagFilters.contains(tag)) {
+      _selectedTagFilters.remove(tag);
+    } else {
+      _selectedTagFilters.add(tag);
+    }
+    notifyListeners();
+  }
+
+  void clearFilters() {
+    _recurringFilter = RecurringFilter.all;
+    _selectedTagFilters = {};
     notifyListeners();
   }
 
