@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:monthly_budget/app_state.dart';
 import 'package:monthly_budget/pages/settings_page.dart';
+import 'package:monthly_budget/pages/stats_page.dart';
 import 'package:monthly_budget/pages/tags_page.dart';
 import 'package:monthly_budget/widgets/summary_cards.dart';
 import 'package:monthly_budget/widgets/item_list.dart';
@@ -69,6 +70,18 @@ class _HomePageState extends State<HomePage>
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const TagsPage()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.bar_chart),
+                title: const Text('Statistics'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const StatsPage()),
                   );
                 },
               ),
