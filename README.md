@@ -18,6 +18,7 @@ A simple personal finance app built with **Flutter** to track monthly incomes an
 * Toggle to show/hide tags on item cards
 * Settings with tag management (rename/delete tags)
 * Filter items by tags or recurring status
+* Statistics with monthly breakdown by tag and recurring vs one-time charts
 
 ---
 
@@ -78,9 +79,3 @@ context.read<AppState>().addExpense(item);
 * Immutable data classes
 * No logic inside models
 * Pure data containers
-
----
-
-## Planned Features
-
-* Statistics and reports
