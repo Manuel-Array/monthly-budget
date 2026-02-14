@@ -114,6 +114,60 @@ class AppState extends ChangeNotifier {
   double get balance =>
       totalIncomes - totalExpenses;
 
+  // Statistics (month-only filtering, ignores active tag/recurring filters)
+
+  List<Item> get monthExpenses =>
+      List.unmodifiable(_expenses.where(_shouldIncludeInMonth));
+
+  List<Item> get monthIncomes =>
+      List.unmodifiable(_incomes.where(_shouldIncludeInMonth));
+
+  double get totalMonthExpenses =>
+      monthExpenses.fold(0.0, (sum, item) => sum + item.amount);
+
+  double get totalMonthIncomes =>
+      monthIncomes.fold(0.0, (sum, item) => sum + item.amount);
+
+  Map<String, double> get expensesByTag {
+    final result = <String, double>{};
+    for (final item in monthExpenses) {
+      if (item.tags.isEmpty) {
+        result['Untagged'] = (result['Untagged'] ?? 0.0) + item.amount;
+      } else {
+        for (final tag in item.tags) {
+          result[tag] = (result[tag] ?? 0.0) + item.amount;
+        }
+      }
+    }
+    return result;
+  }
+
+  Map<String, double> get incomesByTag {
+    final result = <String, double>{};
+    for (final item in monthIncomes) {
+      if (item.tags.isEmpty) {
+        result['Untagged'] = (result['Untagged'] ?? 0.0) + item.amount;
+      } else {
+        for (final tag in item.tags) {
+          result[tag] = (result[tag] ?? 0.0) + item.amount;
+        }
+      }
+    }
+    return result;
+  }
+
+  double get recurringExpensesTotal =>
+      monthExpenses.where((i) => i.isRecurring).fold(0.0, (sum, i) => sum + i.amount);
+
+  double get oneTimeExpensesTotal =>
+      monthExpenses.where((i) => !i.isRecurring).fold(0.0, (sum, i) => sum + i.amount);
+
+  double get recurringIncomesTotal =>
+      monthIncomes.where((i) => i.isRecurring).fold(0.0, (sum, i) => sum + i.amount);
+
+  double get oneTimeIncomesTotal =>
+      monthIncomes.where((i) => !i.isRecurring).fold(0.0, (sum, i) => sum + i.amount);
+
   // Month selection
 
   DateTime get selectedMonth => _selectedMonth;
