@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:monthly_budget/app_state.dart';
 import 'package:monthly_budget/models/item.dart';
 import 'package:monthly_budget/models/item_adapter.dart';
-import 'package:monthly_budget/pages/home_page.dart';
+import 'package:monthly_budget/pages/main_shell_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         ),
-        home: const HomePage(),
+        home: const MainShellPage(),
       ),
     );
   }
