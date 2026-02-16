@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:monthly_budget/pages/home_page.dart';
 import 'package:monthly_budget/pages/stats_page.dart';
 
+enum _MainTab { home, statistics }
+
 class MainShellPage extends StatefulWidget {
   const MainShellPage({super.key});
 
@@ -11,13 +13,22 @@ class MainShellPage extends StatefulWidget {
 }
 
 class _MainShellPageState extends State<MainShellPage> {
-  int _selectedIndex = 0;
+  _MainTab _selectedTab = _MainTab.home;
   late final List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
     _pages = const [HomePage(), StatsPage()];
+    assert(_pages.length == _MainTab.values.length);
+  }
+
+  int get _selectedIndex => _selectedTab.index;
+
+  void _onDestinationSelected(int index) {
+    final nextTab = _MainTab.values[index];
+    if (nextTab == _selectedTab) return;
+    setState(() => _selectedTab = nextTab);
   }
 
   @override
@@ -26,10 +37,7 @@ class _MainShellPageState extends State<MainShellPage> {
       body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) {
-          if (index == _selectedIndex) return;
-          setState(() => _selectedIndex = index);
-        },
+        onDestinationSelected: _onDestinationSelected,
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
