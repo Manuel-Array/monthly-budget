@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import 'package:monthly_budget/app_state.dart';
 import 'package:monthly_budget/pages/settings_page.dart';
-import 'package:monthly_budget/pages/stats_page.dart';
 import 'package:monthly_budget/pages/tags_page.dart';
 import 'package:monthly_budget/widgets/summary_cards.dart';
 import 'package:monthly_budget/widgets/item_list.dart';
@@ -73,21 +72,12 @@ class _HomePageState extends State<HomePage>
                   );
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.bar_chart),
-                title: const Text('Statistics'),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const StatsPage()),
-                  );
-                },
-              ),
               const Divider(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Text(
                   'Filters',
                   style: Theme.of(context).textTheme.titleSmall,
@@ -97,9 +87,18 @@ class _HomePageState extends State<HomePage>
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: SegmentedButton<RecurringFilter>(
                   segments: const [
-                    ButtonSegment(value: RecurringFilter.all, label: Text('All')),
-                    ButtonSegment(value: RecurringFilter.recurringOnly, label: Text('Recurring')),
-                    ButtonSegment(value: RecurringFilter.oneTimeOnly, label: Text('One-time')),
+                    ButtonSegment(
+                      value: RecurringFilter.all,
+                      label: Text('All'),
+                    ),
+                    ButtonSegment(
+                      value: RecurringFilter.recurringOnly,
+                      label: Text('Recurring'),
+                    ),
+                    ButtonSegment(
+                      value: RecurringFilter.oneTimeOnly,
+                      label: Text('One-time'),
+                    ),
                   ],
                   selected: {appState.recurringFilter},
                   onSelectionChanged: (selected) {
@@ -130,7 +129,10 @@ class _HomePageState extends State<HomePage>
               ],
               if (appState.hasActiveFilters)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: TextButton(
@@ -172,9 +174,7 @@ class _HomePageState extends State<HomePage>
             totalExpenses: appState.totalExpenses,
             totalIncomes: appState.totalIncomes,
           ),
-          BalanceCard(
-            balance: appState.balance,
-          ),
+          BalanceCard(balance: appState.balance),
           const MonthSelector(),
           TabBar(
             controller: _tabController,
